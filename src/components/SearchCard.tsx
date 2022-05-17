@@ -1,17 +1,21 @@
-import React, { FC, ReactElement, useState } from 'react'
+import React, { FC, ReactElement, useState, useCallback } from 'react'
 import { SearchCardProps } from '../utils/types'
+import { debounce } from 'lodash'
 
 const SearchCard: FC<SearchCardProps> = ({ processInput }): ReactElement => {
   const [query, setQuery] = useState<string>('')
+
+  const delayedQuery = useCallback(
+    debounce((q: string) => processInput(q), 500),
+    []
+  )
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setQuery(event.target.value)
 
-    setTimeout(() => {
-      processInput(query)
-    }, 1000)
+    delayedQuery(event.target.value)
   }
 
   return (
