@@ -1,41 +1,36 @@
 import { useEffect, useState } from 'react'
-import { BASE_API_URL } from '../utils/constants'
+import { Loader, SearchCard, StoryCard } from '../components'
+import { BASE_API_SEARCH_URL } from '../utils/constants'
+import { StoryType } from '../utils/types'
 
 const Home = () => {
+  const [loading, setLoading] = useState<boolean>(true)
   const [stories, setStories] = useState<Array<StoryType>>([])
 
   const fetchLatestStories = async () => {
-    const response = await fetch(`${BASE_API_URL}tags=front_page`)
-    const stories = await response.json()
-    setStories(stories)
+    setLoading(true)
+    const response = await fetch(`${BASE_API_SEARCH_URL}tags=front_page`)
+    const { hits } = await response.json()
+    setStories(hits)
+    setLoading(false)
   }
 
   useEffect(() => {
     fetchLatestStories()
-
-    return () => {
-      setStories([])
-    }
   }, [])
 
   return (
     <div>
-      <div className="container mx-auto px-28 py-4">
+      <div className="container mx-auto max-w-3xl p-4">
         {/* SearchBard */}
-        <div className="w-full">
-          <input
-            className="border-2 border-primary rounded px-4 py-2 w-full shadow"
-            type="text"
-            name="query"
-            id="query"
-            placeholder="Search"
-          />
-        </div>
-        <div>
-          {stories && stories.length > 0 ? (
-            stories.map((story, index) => <div key={index}>{story.title}</div>)
+        <SearchCard />
+        <div className="flex flex-col space-y-1">
+          {loading ? (
+            <Loader />
           ) : (
-            <div>Loading...</div>
+            stories.map((story) => (
+              <StoryCard key={story.objectID} story={story} />
+            ))
           )}
         </div>
       </div>
