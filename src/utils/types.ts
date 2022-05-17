@@ -10,6 +10,7 @@ export type StoryType = {
   created_at_i: number
   relevancy_score: number
   objectID: string
+  children?: []
 }
 
 export type StoryCardProps = {
@@ -18,4 +19,21 @@ export type StoryCardProps = {
 
 export type CardLabelProps = {
   label: string
+}
+
+export type SearchCardProps = {
+  processInput: Function
+}
+
+export type CommentProp = {
+  firstLayer: boolean
+  comment: {
+    id: number
+    created_at: string
+    type: string
+    author: string
+    text: string
+    points: null
+    children?: []
+  }
 }

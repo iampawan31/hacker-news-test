@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Loader, SearchCard, StoryCard } from '../components'
 import { BASE_API_SEARCH_URL } from '../utils/constants'
 import { StoryType } from '../utils/types'
+import { useSearchParams } from 'react-router-dom'
 
 const Home = () => {
   const [loading, setLoading] = useState<boolean>(true)
@@ -9,6 +10,7 @@ const Home = () => {
   const [numberOfPages, setNumberOfPages] = useState<number>(0)
   const [hitsPerPage, setHitsPerPage] = useState<number>(0)
   const [stories, setStories] = useState<Array<StoryType>>([])
+  const [searchParams, setSearchParams] = useSearchParams()
 
   const prevPage = async () => {
     if (currentPage === 0) return
@@ -22,6 +24,11 @@ const Home = () => {
     setCurrentPage(page)
     setNumberOfPages(nbPages)
     setHitsPerPage(hitsPerPage)
+    if (currentPage === 0) {
+      setSearchParams({})
+    } else {
+      setSearchParams({ page: (currentPage - 1).toString() })
+    }
     setLoading(false)
   }
 
@@ -37,12 +44,16 @@ const Home = () => {
     setCurrentPage(page)
     setNumberOfPages(nbPages)
     setHitsPerPage(hitsPerPage)
+    setSearchParams({ page: (currentPage + 1).toString() })
     setLoading(false)
   }
 
-  const fetchLatestStories = async () => {
+  const fetchLatestStories = async (query: string = '') => {
     setLoading(true)
-    const response = await fetch(`${BASE_API_SEARCH_URL}tags=front_page`)
+
+    const response = query
+      ? await fetch(`${BASE_API_SEARCH_URL}query=${query}`)
+      : await fetch(`${BASE_API_SEARCH_URL}tags=front_page`)
     const { hits, page, nbPages, hitsPerPage } = await response.json()
     setStories(hits)
     setCurrentPage(page)
@@ -59,7 +70,7 @@ const Home = () => {
     <div>
       <div className="container mx-auto max-w-3xl p-4">
         {/* SearchBard */}
-        <SearchCard />
+        <SearchCard processInput={fetchLatestStories} />
         {/* Pagination Section */}
         <div className="flex justify-between my-4">
           <button
