@@ -2,7 +2,6 @@ import { FC, ReactElement, useEffect, useState } from 'react'
 import { Loader, SearchCard, StoryCard } from '../components'
 import { BASE_API_SEARCH_URL } from '../utils/constants'
 import { StoryType } from '../utils/types'
-import { useSearchParams } from 'react-router-dom'
 
 const Home: FC = (): ReactElement => {
   const [loading, setLoading] = useState<boolean>(true)
@@ -10,7 +9,6 @@ const Home: FC = (): ReactElement => {
   const [numberOfPages, setNumberOfPages] = useState<number>(0)
   const [hitsPerPage, setHitsPerPage] = useState<number>(0)
   const [stories, setStories] = useState<Array<StoryType>>([])
-  const [searchParams, setSearchParams] = useSearchParams()
 
   const prevPage = async () => {
     if (currentPage === 0) return
@@ -24,11 +22,6 @@ const Home: FC = (): ReactElement => {
     setCurrentPage(page)
     setNumberOfPages(nbPages)
     setHitsPerPage(hitsPerPage)
-    if (currentPage === 0) {
-      setSearchParams({})
-    } else {
-      setSearchParams({ page: (currentPage - 1).toString() })
-    }
     setLoading(false)
   }
 
@@ -44,7 +37,6 @@ const Home: FC = (): ReactElement => {
     setCurrentPage(page)
     setNumberOfPages(nbPages)
     setHitsPerPage(hitsPerPage)
-    setSearchParams({ page: (currentPage + 1).toString() })
     setLoading(false)
   }
 

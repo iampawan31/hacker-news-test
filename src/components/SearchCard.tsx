@@ -14,8 +14,15 @@ const SearchCard: FC<SearchCardProps> = ({ processInput }): ReactElement => {
     event: React.ChangeEvent<HTMLInputElement>
   ): void => {
     setQuery(event.target.value)
-
     delayedQuery(event.target.value)
+  }
+
+  const handleEnterKey = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (event.key === 'Enter') {
+      processInput(query)
+    }
   }
 
   return (
@@ -27,6 +34,7 @@ const SearchCard: FC<SearchCardProps> = ({ processInput }): ReactElement => {
         autoComplete="off"
         id="query"
         value={query}
+        onKeyDown={handleEnterKey}
         onChange={handleInputChange}
         placeholder="Search"
       />
