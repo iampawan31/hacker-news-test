@@ -1,6 +1,6 @@
-import React, { FC, ReactElement, useState, useCallback } from 'react'
-import { SearchCardProps } from '../utils/types'
 import { debounce } from 'lodash'
+import React, { FC, ReactElement, useCallback, useState } from 'react'
+import { SearchCardProps } from '../utils/types'
 
 const SearchCard: FC<SearchCardProps> = ({ processInput }): ReactElement => {
   const [query, setQuery] = useState<string>('')

@@ -1,22 +1,15 @@
-import { useEffect, useState } from 'react'
+import { FC, ReactElement, useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { CardLabel, Comment, Loader } from '../components'
 import { BASE_API_ITEM_URL } from '../utils/constants'
 import { StoryType } from '../utils/types'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { CardLabel, Comments, Loader } from '../components'
 import { formatTimeFromNow } from '../utils/utils'
 
-const StoryDetail = () => {
+const StoryDetail: FC = (): ReactElement => {
   let params = useParams()
   let navigate = useNavigate()
   const [loading, setLoading] = useState<boolean>(true)
   const [story, setStory] = useState<StoryType | null>(null)
-  const formattedDate = story?.created_at
-    ? formatTimeFromNow(story?.created_at)
-    : ''
-
-  const createCommentMarkup = (comment: string) => {
-    return { __html: comment }
-  }
 
   const fetchStoryByID = async () => {
     try {
@@ -57,15 +50,17 @@ const StoryDetail = () => {
             </div>
             <div className="bg-white p-4 rounded shadow">
               <div className="text-3xl">{story?.title}</div>
-              <div className="flex space-x-2 my-4">
+              <div className="flex flex-wrap my-4">
                 <CardLabel label={`${story?.points} points`} />
                 <CardLabel label={`story by ${story?.author}`} />
-                <CardLabel label={`published ${formattedDate}`} />
+                <CardLabel
+                  label={`published ${formatTimeFromNow(story?.created_at)}`}
+                />
               </div>
               <div className="flex flex-col space-y-1">
                 {story?.children &&
                   story?.children.map((comment, index) => (
-                    <Comments firstLayer={true} comment={comment} />
+                    <Comment firstLayer={true} key={index} comment={comment} />
                   ))}
               </div>
             </div>

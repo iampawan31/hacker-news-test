@@ -1,9 +1,9 @@
-import React from 'react'
+import { FC, ReactElement } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { Footer } from './components'
 import { Home, StoryDetail } from './views'
 
-const App = () => {
+const App: FC = (): ReactElement => {
   return (
     <div className="bg-gray h-full min-h-screen text-black">
       <Routes>

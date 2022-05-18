@@ -16,7 +16,7 @@ const Comment: FC<CommentProp> = ({ firstLayer, comment }): ReactElement => {
     <div className={`${firstLayer ? 'ml-0' : 'ml-10'} mt-2 border-dark-gray`}>
       <div className="rounded bg-gray p-4 shadow">
         <div dangerouslySetInnerHTML={createMarkup(comment.text)} />
-        <div className="flex space-x-2 mt-4">
+        <div className="flex flex-wrap mt-4">
           <CardLabel label={formatTimeFromNow(comment.created_at)} />
           <CardLabel label={comment.author} />
         </div>

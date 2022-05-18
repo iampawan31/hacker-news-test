@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react'
+import { FC, ReactElement, useEffect, useState } from 'react'
 import { Loader, SearchCard, StoryCard } from '../components'
 import { BASE_API_SEARCH_URL } from '../utils/constants'
 import { StoryType } from '../utils/types'
 import { useSearchParams } from 'react-router-dom'
 
-const Home = () => {
+const Home: FC = (): ReactElement => {
   const [loading, setLoading] = useState<boolean>(true)
   const [currentPage, setCurrentPage] = useState<number>(0)
   const [numberOfPages, setNumberOfPages] = useState<number>(0)
